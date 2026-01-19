@@ -35,7 +35,15 @@ module.exports = (env, argv) => {
             MiniCssExtractPlugin.loader,
             { loader: "css-loader", options: { sourceMap: !isProd } },
             { loader: "postcss-loader", options: { sourceMap: !isProd } },
-            { loader: "sass-loader", options: { sourceMap: !isProd } },
+            {
+              loader: "sass-loader",
+              options: {
+                sourceMap: !isProd,
+                sassOptions: {
+                  quietDeps: true, // silence @import deprecation warnings from dependencies
+                },
+              },
+            },
           ],
         },
       ],

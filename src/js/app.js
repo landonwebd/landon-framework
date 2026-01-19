@@ -1,6 +1,6 @@
-import "../scss/app.scss";
-import "./import-components-scss";
-import { initComponents } from "./init-components";
+import "../scss/app.css";
+import "./import-blocks-scss";
+import { initBlocks } from "./init-blocks";
 
 document.addEventListener("DOMContentLoaded", () => {
   initComponents();

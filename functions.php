@@ -3,6 +3,11 @@
  * Theme setup and global functions
  */
 
+// Register ACF Blocks
+require_once get_template_directory() . '/inc/blocks/register-blocks.php';
+require_once get_template_directory() . '/inc/blocks/editor.php';
+
+
 if ( ! defined( 'ABSPATH' ) ) {
   exit; // Exit if accessed directly.
 }
@@ -29,19 +34,8 @@ add_action( 'after_setup_theme', 'ldn_theme_setup' );
 function ldn_theme_assets() {
   $theme_version = wp_get_theme()->get('Version');
 
-  wp_enqueue_style(
-    'app',
-    get_template_directory_uri() . '/dist/app.css',
-    [],
-    $theme_version
-  );
+  wp_enqueue_style('app',get_template_directory_uri() . '/dist/app.css',[],$theme_version);
 
-  wp_enqueue_script(
-    'app',
-    get_template_directory_uri() . '/dist/app.js',
-    [],
-    $theme_version,
-    true
-  );
+  wp_enqueue_script('app',get_template_directory_uri() . '/dist/app.js',[],$theme_version,true);
 }
 add_action( 'wp_enqueue_scripts', 'ldn_theme_assets' );
