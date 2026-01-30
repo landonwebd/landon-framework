@@ -1,59 +1,43 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./components lazy recursive \\/([a-z0-9-]+)\\/\\1\\.js$"
-/*!**************************************************!*\
-  !*** ./components/ lazy \/([a-z0-9-]+)\/\1\.js$ ***!
-  \**************************************************/
-(module, __unused_webpack_exports, __webpack_require__) {
-
-var map = {};
-
-function webpackAsyncContext(req) {
-	return Promise.resolve().then(() => {
-		if(!__webpack_require__.o(map, req)) {
-			var e = new Error("Cannot find module '" + req + "'");
-			e.code = 'MODULE_NOT_FOUND';
-			throw e;
-		}
-
-		var id = map[req];
-		return __webpack_require__(id);
-	});
-}
-webpackAsyncContext.keys = () => (Object.keys(map));
-webpackAsyncContext.id = "./components lazy recursive \\/([a-z0-9-]+)\\/\\1\\.js$";
-module.exports = webpackAsyncContext;
-
-/***/ },
-
-/***/ "./components sync recursive \\/[a-z0-9-]+\\.scss$"
+/***/ "./blocks lazy recursive \\/([a-z0-9-]+)\\/\\1\\.js$"
 /*!**********************************************!*\
-  !*** ./components/ sync \/[a-z0-9-]+\.scss$ ***!
+  !*** ./blocks/ lazy \/([a-z0-9-]+)\/\1\.js$ ***!
   \**********************************************/
-(module, __unused_webpack_exports, __webpack_require__) {
+(module) {
 
-var map = {};
-
-
-function webpackContext(req) {
-	var id = webpackContextResolve(req);
-	return __webpack_require__(id);
-}
-function webpackContextResolve(req) {
-	if(!__webpack_require__.o(map, req)) {
+function webpackEmptyAsyncContext(req) {
+	// Here Promise.resolve().then() is used instead of new Promise() to prevent
+	// uncaught exception popping up in devtools
+	return Promise.resolve().then(() => {
 		var e = new Error("Cannot find module '" + req + "'");
 		e.code = 'MODULE_NOT_FOUND';
 		throw e;
-	}
-	return map[req];
+	});
 }
-webpackContext.keys = function webpackContextKeys() {
-	return Object.keys(map);
-};
-webpackContext.resolve = webpackContextResolve;
-module.exports = webpackContext;
-webpackContext.id = "./components sync recursive \\/[a-z0-9-]+\\.scss$";
+webpackEmptyAsyncContext.keys = () => ([]);
+webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
+webpackEmptyAsyncContext.id = "./blocks lazy recursive \\/([a-z0-9-]+)\\/\\1\\.js$";
+module.exports = webpackEmptyAsyncContext;
+
+/***/ },
+
+/***/ "./blocks sync recursive \\/[a-z0-9-]+\\.scss$"
+/*!******************************************!*\
+  !*** ./blocks/ sync \/[a-z0-9-]+\.scss$ ***!
+  \******************************************/
+(module) {
+
+function webpackEmptyContext(req) {
+	var e = new Error("Cannot find module '" + req + "'");
+	e.code = 'MODULE_NOT_FOUND';
+	throw e;
+}
+webpackEmptyContext.keys = () => ([]);
+webpackEmptyContext.resolve = webpackEmptyContext;
+webpackEmptyContext.id = "./blocks sync recursive \\/[a-z0-9-]+\\.scss$";
+module.exports = webpackEmptyContext;
 
 /***/ },
 
@@ -2677,60 +2661,54 @@ module.exports.setLogLevel = function (level) {
 
 /***/ },
 
-/***/ "./src/js/import-components-scss.js"
-/*!******************************************!*\
-  !*** ./src/js/import-components-scss.js ***!
-  \******************************************/
+/***/ "./src/js/import-blocks-scss.js"
+/*!**************************************!*\
+  !*** ./src/js/import-blocks-scss.js ***!
+  \**************************************/
 (__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
 
 // Automatically import all component SCSS files
-const req = __webpack_require__("./components sync recursive \\/[a-z0-9-]+\\.scss$");
+const req = __webpack_require__("./blocks sync recursive \\/[a-z0-9-]+\\.scss$");
 req.keys().forEach(req);
 
 /***/ },
 
-/***/ "./src/js/init-components.js"
-/*!***********************************!*\
-  !*** ./src/js/init-components.js ***!
-  \***********************************/
+/***/ "./src/js/init-blocks.js"
+/*!*******************************!*\
+  !*** ./src/js/init-blocks.js ***!
+  \*******************************/
 (__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   initComponents: () => (/* binding */ initComponents)
+/* harmony export */   initBlocks: () => (/* binding */ initBlocks)
 /* harmony export */ });
-// Lazy-load any component JS file that matches: components/<name>/<name>.js
-const componentsContext = __webpack_require__("./components lazy recursive \\/([a-z0-9-]+)\\/\\1\\.js$");
+// Lazy-load any block JS file that matches: blocks/<name>/<name>.js
+const blocksContext = __webpack_require__("./blocks lazy recursive \\/([a-z0-9-]+)\\/\\1\\.js$");
 function normalizeName(name) {
   return (name || "").trim();
 }
-async function initComponents(root = document) {
-  const nodes = Array.from(root.querySelectorAll("[data-component]"));
-
-  // avoid initializing the same element twice
+async function initBlocks(root = document) {
+  const nodes = Array.from(root.querySelectorAll("[data-block]"));
   const initialized = new WeakSet();
   for (const el of nodes) {
     if (initialized.has(el)) continue;
-    const raw = el.getAttribute("data-component");
+    const raw = el.getAttribute("data-block");
     if (!raw) continue;
-
-    // allow multiple components: data-component="hero-banner something-else"
     const names = raw.split(/\s+/).map(normalizeName).filter(Boolean);
     for (const name of names) {
       const request = `./${name}/${name}.js`;
       try {
-        const mod = await componentsContext(request);
+        const mod = await blocksContext(request);
         const init = mod?.default;
         if (typeof init === "function") {
           init(el);
         } else {
-          // module exists but doesn't export a default init fn
-          console.warn(`[component] ${name}: default export is not a function`);
+          console.warn(`[block] ${name}: default export is not a function`);
         }
       } catch (err) {
-        // module not found or failed to load
-        console.warn(`[component] ${name}: failed to load (${request})`, err);
+        console.warn(`[block] ${name}: failed to load (${request})`, err);
       }
     }
     initialized.add(el);
@@ -2809,17 +2787,9 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 		};
 /******/ 	})();
 /******/ 	
-/******/ 	/* webpack/runtime/ensure chunk */
-/******/ 	(() => {
-/******/ 		// The chunk loading function for additional chunks
-/******/ 		// Since all referenced chunks are already included
-/******/ 		// in this file, this function is empty here.
-/******/ 		__webpack_require__.e = () => (Promise.resolve());
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("5224195cc16596c1a94a")
+/******/ 		__webpack_require__.h = () => ("487b0ddb38e47567ca20")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
@@ -3464,14 +3434,14 @@ var socketURL = createSocketURL(parsedResourceQuery);
   \***********************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _scss_app_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../scss/app.css */ "./src/scss/app.css");
-/* harmony import */ var _import_components_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./import-components-scss */ "./src/js/import-components-scss.js");
-/* harmony import */ var _import_components_scss__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_import_components_scss__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _init_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./init-components */ "./src/js/init-components.js");
+/* harmony import */ var _import_blocks_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./import-blocks-scss */ "./src/js/import-blocks-scss.js");
+/* harmony import */ var _import_blocks_scss__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_import_blocks_scss__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _init_blocks__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./init-blocks */ "./src/js/init-blocks.js");
 
 
 
 document.addEventListener("DOMContentLoaded", () => {
-  (0,_init_components__WEBPACK_IMPORTED_MODULE_2__.initComponents)();
+  initComponents();
 });
 })();
 

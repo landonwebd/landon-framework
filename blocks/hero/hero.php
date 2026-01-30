@@ -18,6 +18,7 @@ if (!empty($block['align'])) $classes[] = 'align' . $block['align'];
 $heading = get_field('heading') ?: '';
 $subheading = get_field('subheading') ?: '';
 $image = get_field('image'); // ACF image field (array) if return format = array
+
 ?>
 
 <section class="<?php echo esc_attr(implode(' ', $classes)); ?>" <?php echo $anchor ? 'id="'.esc_attr($anchor).'"' : ''; ?>>

@@ -21,8 +21,6 @@ add_filter('allowed_block_types_all', function ($allowed_blocks, $editor_context
   // Your ACF blocks
   $ldn_blocks = [
     'acf/hero',
-    'acf/rich-text'
-    'acf/cheese'
     // HYGEN:ADD_BLOCK
   ];
 

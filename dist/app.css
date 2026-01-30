@@ -540,6 +540,9 @@
   }
 }
 @layer utilities {
+  .collapse {
+    visibility: collapse;
+  }
   .absolute {
     position: absolute;
   }
@@ -576,9 +579,6 @@
   .flex {
     display: flex;
   }
-  .grid {
-    display: grid;
-  }
   .hidden {
     display: none;
   }
@@ -600,9 +600,6 @@
   .border {
     border-style: var(--tw-border-style);
     border-width: 1px;
-  }
-  .lowercase {
-    text-transform: lowercase;
   }
   .italic {
     font-style: italic;
