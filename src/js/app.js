@@ -3,5 +3,5 @@ import "./import-blocks-scss";
 import { initBlocks } from "./init-blocks";
 
 document.addEventListener("DOMContentLoaded", () => {
-  initComponents();
+  initBlocks();
 });

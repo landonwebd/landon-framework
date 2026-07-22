@@ -1,0 +1,1 @@
+{"version":3,"file":"blocks_carousel_carousel_js.chunk.js","mappings":";;;;;;;;;;;;;AAAe,SAASA,YAAYA,CAACC,IAAI,EAAE;EACzC,IAAI,CAACA,IAAI,EAAE;AACb,C","sources":["webpack:///./blocks/carousel/carousel.js"],"sourcesContent":["export default function initCarousel(root) {\n  if (!root) return;\n}\n"],"names":["initCarousel","root"],"ignoreList":[],"sourceRoot":""}

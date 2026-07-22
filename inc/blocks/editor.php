@@ -20,7 +20,25 @@ add_filter('allowed_block_types_all', function ($allowed_blocks, $editor_context
 
   // Your ACF blocks
   $ldn_blocks = [
+    // HYGEN:BLOCK:EDITOR hero
     'acf/hero',
+    // HYGEN:BLOCK:EDITOR carousel
+    'acf/carousel',
+    // HYGEN:BLOCK:EDITOR testimonials
+    'acf/testimonials',
+    // HYGEN:BLOCK:EDITOR test-block
+    'acf/test-block',
+    // HYGEN:BLOCK:EDITOR test-block-two
+    'acf/test-block-two',
+    // HYGEN:BLOCK:EDITOR test-block-four
+    'acf/test-block-four',
+    // HYGEN:BLOCK:EDITOR test-block-five
+    'acf/test-block-five',
+    // HYGEN:BLOCK:EDITOR test-block-six
+    'acf/test-block-six',
+    // HYGEN:BLOCK:EDITOR test-block-seven
+    'acf/test-block-seven',
+
     // HYGEN:ADD_BLOCK
   ];
 

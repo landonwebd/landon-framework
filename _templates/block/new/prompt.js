@@ -50,8 +50,11 @@ module.exports = {
 
     const { withScss, withJs } = await prompter.prompt([
       { type: "confirm", name: "withScss", message: "Generate SCSS file?", initial: true },
-      { type: "confirm", name: "withJs", message: "Generate JS file?", initial: false },
+      { type: "confirm", name: "withJs", message: "Generate JS file?", initial: true },
     ]);
+
+    const dashiconsUrl = "https://developer.wordpress.org/resource/dashicons/";
+    const customDashiconChoice = "__custom_dashicon__";
 
     const iconChoices = [
       { name: "cover-image", message: "Cover" },
@@ -66,6 +69,7 @@ module.exports = {
       { name: "layout", message: "Layout" },
       { name: "slides", message: "Slides" },
       { name: "admin-generic", message: "Generic" },
+      { name: customDashiconChoice, message: "Choose from WordPress (Dashicons)" },
     ];
 
     const { icon } = await prompter.prompt([
@@ -77,9 +81,65 @@ module.exports = {
       },
     ]);
 
-    // Normalize to the dashicon slug (the value we want in PHP)
-    const iconValue = typeof icon === "string" ? icon : (icon?.name || icon?.value || "admin-generic");
+    // Normalize to the dashicon slug (the value we want in PHP).
+    let iconValue = typeof icon === "string" ? icon : (icon?.name || icon?.value || "admin-generic");
 
+    if (iconValue === customDashiconChoice) {
+      const { customDashicon } = await prompter.prompt([
+        {
+          type: "input",
+          name: "customDashicon",
+          message: `Dashicon slug (browse ${dashiconsUrl}):`,
+          validate: (value) => {
+            const normalized = slugify(value).replace(/^dashicons-/, "");
+            return normalized ? true : "Enter a Dashicon slug, such as admin-site.";
+          },
+        },
+      ]);
+
+      // Accept either a slug (admin-site) or CSS class name (dashicons-admin-site).
+      iconValue = slugify(customDashicon).replace(/^dashicons-/, "");
+    }
+
+    const { supportsAnchor, alignment, usesInnerBlocks } = await prompter.prompt([
+      {
+        type: "confirm",
+        name: "supportsAnchor",
+        message: "Enable a custom HTML anchor?",
+        initial: true,
+      },
+      {
+        type: "select",
+        name: "alignment",
+        message: "Block alignment options:",
+        choices: [
+          { name: "none", message: "None" },
+          { name: "all", message: "All (left, center, right, wide, full)" },
+          { name: "wide-full", message: "Wide and full only" },
+        ],
+      },
+      {
+        type: "confirm",
+        name: "usesInnerBlocks",
+        message: "Allow nested blocks (InnerBlocks)?",
+        initial: false,
+      },
+    ]);
+
+    const { starterField } = await prompter.prompt([
+      {
+        type: "select",
+        name: "starterField",
+        message: "Starter ACF field:",
+        choices: [
+          { name: "none", message: "None (empty field group)" },
+          { name: "heading", message: "Heading" },
+          { name: "rich-text", message: "Rich text" },
+          { name: "image", message: "Image" },
+          { name: "repeater", message: "Repeater" },
+        ],
+      },
+    ]);
 
     return {
       // Human readable
@@ -97,6 +157,10 @@ module.exports = {
       withScss,
       withJs,
       icon: iconValue,
+      supportsAnchor,
+      alignment,
+      usesInnerBlocks,
+      starterField,
     };
   },
 };

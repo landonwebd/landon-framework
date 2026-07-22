@@ -20,6 +20,9 @@ if ( ! function_exists( 'ldn_theme_setup' ) ) {
     // Featured images.
     add_theme_support( 'post-thumbnails' );
 
+    // Align Wide support
+    add_theme_support( 'align-wide' );
+
     // HTML5 markup.
     add_theme_support( 'html5', [ 'search-form', 'comment-form', 'comment-list', 'gallery', 'caption' ] );
 

@@ -1,7 +1,8 @@
 {
   "scripts": {
     "hygen": "hygen",
-    "component": "hygen component new",
+    "block": "hygen block new",
+    "delete-block": "hygen block delete",
     "dev": "webpack --mode development",
     "watch": "webpack serve --mode development",
     "build": "webpack --mode production"

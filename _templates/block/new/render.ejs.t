@@ -37,4 +37,8 @@ $attr_block = 'data-block="<%= slug %>"';
 
   <!-- Block markup goes here -->
 
+  <% if (usesInnerBlocks) { -%>
+    <InnerBlocks />
+  <% } -%>
+
 </section>
